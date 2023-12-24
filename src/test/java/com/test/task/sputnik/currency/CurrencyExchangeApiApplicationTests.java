@@ -1,4 +1,4 @@
-package com.test.task.sputnik.currencyexchangeapi;
+package com.test.task.sputnik.currency;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

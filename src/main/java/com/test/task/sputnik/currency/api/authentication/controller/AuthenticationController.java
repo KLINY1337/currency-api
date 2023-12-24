@@ -1,7 +1,7 @@
-package com.test.task.sputnik.currencyexchangeapi.authentication.controller;
+package com.test.task.sputnik.currency.api.authentication.controller;
 
-import com.test.task.sputnik.currencyexchangeapi.authentication.dto.request.TokenDto;
-import com.test.task.sputnik.currencyexchangeapi.authentication.service.AuthenticationService;
+import com.test.task.sputnik.currency.api.authentication.dto.request.TokenDto;
+import com.test.task.sputnik.currency.api.authentication.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

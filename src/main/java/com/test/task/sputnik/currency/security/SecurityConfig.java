@@ -1,7 +1,7 @@
-package com.test.task.sputnik.currencyexchangeapi.security;
+package com.test.task.sputnik.currency.security;
 
-import com.test.task.sputnik.currencyexchangeapi.authentication.entity.Token;
-import com.test.task.sputnik.currencyexchangeapi.authentication.repository.TokenRepository;
+import com.test.task.sputnik.currency.api.authentication.entity.Token;
+import com.test.task.sputnik.currency.api.authentication.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,14 +23,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
         security.authorizeHttpRequests(requestMatcherRegistry -> { requestMatcherRegistry
+
                 .requestMatchers("/api/v1/auth/**").permitAll()
+
                 .requestMatchers(request -> {
                     String authorizationHeader = request.getHeader("Authorization");
                     if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                         UUID uuid = UUID.fromString(authorizationHeader.substring("Bearer ".length()));
-                        Optional<Token> OptionalToken = tokenRepository.findById(uuid);
-                        if (OptionalToken.isPresent()) {
-                            Token token = OptionalToken.get();
+                        Optional<Token> TokenOptional = tokenRepository.findById(uuid);
+                        if (TokenOptional.isPresent()) {
+                            Token token = TokenOptional.get();
                             token.setLastUsageDate(LocalDateTime.now());
                             tokenRepository.save(token);
                             return true;
@@ -39,6 +41,7 @@ public class SecurityConfig {
                     }
                     return false;
                 }).permitAll()
+
                 .anyRequest().denyAll();
         });
         return security.build();

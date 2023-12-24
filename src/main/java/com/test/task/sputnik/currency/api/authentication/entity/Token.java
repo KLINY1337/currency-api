@@ -1,4 +1,4 @@
-package com.test.task.sputnik.currencyexchangeapi.authentication.entity;
+package com.test.task.sputnik.currency.api.authentication.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
