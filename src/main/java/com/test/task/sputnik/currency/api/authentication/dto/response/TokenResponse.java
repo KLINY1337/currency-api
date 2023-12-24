@@ -1,4 +1,4 @@
-package com.test.task.sputnik.currency.api.authentication.dto.request;
+package com.test.task.sputnik.currency.api.authentication.dto.response;
 
 import com.test.task.sputnik.currency.api.authentication.entity.Token;
 
@@ -8,5 +8,5 @@ import java.util.UUID;
 /**
  * DTO for {@link Token}
  */
-public record TokenDto(UUID uuid) implements Serializable {
+public record TokenResponse(UUID uuid) implements Serializable {
 }

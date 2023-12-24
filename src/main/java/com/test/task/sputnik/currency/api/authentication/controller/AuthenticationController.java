@@ -1,6 +1,6 @@
 package com.test.task.sputnik.currency.api.authentication.controller;
 
-import com.test.task.sputnik.currency.api.authentication.dto.request.TokenDto;
+import com.test.task.sputnik.currency.api.authentication.dto.response.TokenResponse;
 import com.test.task.sputnik.currency.api.authentication.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @GetMapping("/token")
-    public ResponseEntity<TokenDto> getAccessToken() {
+    public ResponseEntity<TokenResponse> getAccessToken() {
         return ResponseEntity.ok(authenticationService.getAccessToken());
     }
 }
