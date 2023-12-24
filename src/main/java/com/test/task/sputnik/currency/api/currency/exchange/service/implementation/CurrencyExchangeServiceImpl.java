@@ -12,9 +12,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,13 +39,29 @@ public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
         }
 
 
-        return RequestUtils.sendRequest(
+        Map<String, Object> apiLayerResponse = RequestUtils.sendRequest(
                 "http://apilayer.net/api/live",
                 HttpMethod.GET,
                 uriVariables,
-                ExchangeRatesResponse.class,
+                HashMap.class,
                 null
         );
+
+        if ((Boolean) apiLayerResponse.get("success")) {
+            return new ExchangeRatesResponse(
+                    (Boolean) apiLayerResponse.get("success"),
+                    Currency.valueOf((String) apiLayerResponse.get("source")),
+                    (Map<String, BigDecimal>) apiLayerResponse.get("quotes"),
+                    Long.valueOf((Integer) apiLayerResponse.get("timestamp")));
+        }
+        else {
+            return new ExchangeRatesResponse(
+                    (Boolean) apiLayerResponse.get("success"),
+                    null,
+                    null,
+                    LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()
+            );
+        }
     }
 
     @Override
@@ -64,10 +81,23 @@ public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
                 HashMap.class,
                 null
         );
-        return new CurrencyConversionResponse(
-                request.sourceCurrency(),
-                request.sourceCurrencyAmount(),
-                request.destinationCurrency(),
-                BigDecimal.valueOf((Double) apiLayerResponse.get("result")));
+
+
+        if ((Boolean) apiLayerResponse.get("success")) {
+            return new CurrencyConversionResponse(
+                    (Boolean) apiLayerResponse.get("success"),
+                    request.sourceCurrency(),
+                    request.sourceCurrencyAmount(),
+                    request.destinationCurrency(),
+                    BigDecimal.valueOf((Double) apiLayerResponse.get("result")));
+        }
+        else {
+            return new CurrencyConversionResponse(
+                    (Boolean) apiLayerResponse.get("success"),
+                    request.sourceCurrency(),
+                    request.sourceCurrencyAmount(),
+                    request.destinationCurrency(),
+                    null);
+        }
     }
 }
