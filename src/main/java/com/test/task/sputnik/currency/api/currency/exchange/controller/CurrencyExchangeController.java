@@ -5,6 +5,7 @@ import com.test.task.sputnik.currency.api.currency.exchange.dto.request.Exchange
 import com.test.task.sputnik.currency.api.currency.exchange.dto.response.CurrencyConversionResponse;
 import com.test.task.sputnik.currency.api.currency.exchange.dto.response.ExchangeRatesResponse;
 import com.test.task.sputnik.currency.api.currency.exchange.service.CurrencyExchangeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +21,12 @@ public class CurrencyExchangeController {
     private final CurrencyExchangeService currencyExchangeService;
 
     @GetMapping("/exchange/rate")
-    public ResponseEntity<ExchangeRatesResponse> getExchangeRatesBySourceCurrency(@RequestBody ExchangeRatesRequest request) {
+    public ResponseEntity<ExchangeRatesResponse> getExchangeRatesBySourceCurrency(@RequestBody @Valid ExchangeRatesRequest request) {
         return ResponseEntity.ok(currencyExchangeService.getExchangeRatesBySourceCurrency(request));
     }
 
     @GetMapping("/convert")
-    public ResponseEntity<CurrencyConversionResponse> convertCurrencies(@RequestBody CurrencyConversionRequest request) {
+    public ResponseEntity<CurrencyConversionResponse> convertCurrencies(@RequestBody @Valid CurrencyConversionRequest request) {
         return ResponseEntity.ok(currencyExchangeService.convertCurrencyFromSourceToDestination(request));
     }
 }
